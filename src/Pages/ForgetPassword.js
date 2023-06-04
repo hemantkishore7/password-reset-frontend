@@ -1,10 +1,36 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
-import React from "react";
+import { Box, Button, Link, TextField, Typography } from "@mui/material";
+
+import axios from "axios";
+import React, { useState } from "react";
 
 function ForgetPassword() {
+  const [email, setEmail] = useState("");
+  const [msg, setMsg] = useState("");
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const { data } = await axios.post("/api/password-reset", { email });
+      setMsg(data.message);
+      setError("");
+    } catch (error) {
+      if (
+        error.response &&
+        error.response.status >= 400 &&
+        error.response.status <= 500
+      ) {
+        setError(error.response.data.message);
+        setMsg("");
+      }
+    }
+  };
+
+  console.log(msg);
   return (
     <div>
-      <form>
+      <form onSubmit={handleSubmit}>
         <Box
           display="flex"
           flexDirection={"column"}
@@ -17,9 +43,9 @@ function ForgetPassword() {
           borderRadius={5}
           boxShadow={"10px 10px 10px #ccc"}
           sx={{
-            ":hover":{
-                boxShadow:"10px 10px 20px #ccc"
-            }
+            ":hover": {
+              boxShadow: "10px 10px 20px #ccc",
+            },
           }}
         >
           <Typography
@@ -27,19 +53,40 @@ function ForgetPassword() {
             fontWeight="bold"
             textAlign="center"
             margin="auto"
-            
           >
             Forget Password
           </Typography>
           <TextField
             placeholder="Enter valid e-mail"
-            type="text"
+            type="email"
             variant="outlined"
             margin="normal"
+            name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
-          <Button variant="contained" color="success">
-            Send Mail
+          <Box
+            display={"flex"}
+            flexDirection={"column"}
+            margin={2}
+            textAlign={"center"}
+          >
+            {
+              error && <Typography color={"red"}>{error}</Typography>
+            }
+            {
+              msg && <Typography color={"green"}>{msg}</Typography>
+            }
+          </Box>
+          <Button variant="contained" color="success" type="submit">
+            Send Mail 
           </Button>
+          <Link
+            href="/"
+            underline="hover" padding={2}
+          >
+            Back to Login
+          </Link>
         </Box>
       </form>
     </div>

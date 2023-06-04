@@ -7,7 +7,7 @@ function Home() {
     <>
     
     <Header/>
-    <Box display={"flex"} flexDirection={"column"} alignItems={"center"} margin={"auto"} marginTop={5}>
+    <Box width={100} height={100} display={"flex"} flexDirection={"column"} alignItems={"center"} margin={"auto"} marginTop={5}>
      <Typography>Welcome Back, User</Typography>
     </Box>
       

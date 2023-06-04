@@ -1,36 +1,26 @@
-import { Alert, Box, Button, Link, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, TextField, Typography } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Auth() {
-  // const [isSignup, setIsSignup] = useState(false);
-  const [signInData, setSignInData] = useState({
+function Signup() {
+  const [signUpData, setSignUpData] = useState({
+    name: "",
+    mobile:"",
     email: "",
     password: "",
   });
-
   const [error, setError] = useState("");
   const [msg, setMsg] = useState("");
 
   const navigate = useNavigate();
 
-  function handleChange(e) {
-    setSignInData((precState) => ({
-      ...precState,
-      [e.target.name]: e.target.value,
-    }));
-  }
-  console.log("handlechange ", signInData);
-
-  //For Sign in
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      const {data} = await axios.post("/api/signin", signInData);
-      localStorage.setItem("token",data.data);
-      setMsg(data.message)
-      navigate("/home");
+      const { data } = await axios.post("/api/signup", signUpData);
+      setMsg(data.message);
+      navigate("/");
     } catch (error) {
       if (
         error.response &&
@@ -38,39 +28,21 @@ function Auth() {
         error.response.status <= 500
       ) {
         setError(error.response.data.message);
-        setMsg("");
       }
     }
   }
-console.log(msg);
-  //For Sign-Up
-  // async function handleSubmit(e) {
-  //   e.preventDefault();
-  //   try {
-  //     const { signInData: res } = await axios.post("/api/signup", signInData);
-  //     setMsg(res.message);
-  //     // navigate("/");
-  //   } catch (error) {
-  //     if (
-  //       error.response &&
-  //       error.response.status >= 400 &&
-  //       error.response.status <= 500
-  //     ) {
-  //       setError(error.response.data.message);
-  //     }
-  //   }
-  // }
 
-  console.log(msg);
+  function handleChange(e) {
+    setSignUpData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  }
+  console.log(signUpData);
 
   return (
     <div>
-    {
-     msg && <Alert severity="success">{msg}</Alert>
-    }
-    {
-      error &&  <Alert severity="error">{error}</Alert>
-    }
+      {msg && <Alert severity="success">{msg}</Alert>}
       <form onSubmit={handleSubmit}>
         <Box
           display={"flex"}
@@ -90,8 +62,30 @@ console.log(msg);
           }}
         >
           <Typography variant="h3" padding={3} alignItems={"center"}>
-            Sign In
+            Sign-Up
           </Typography>
+
+          <TextField
+            type="text"
+            variant="outlined"
+            placeholder="Name"
+            margin="normal"
+            //value={signUpData.name}
+            onChange={handleChange}
+            required
+            name="name"
+          />
+
+          <TextField
+            type="number"
+            variant="outlined"
+            placeholder="Mobile"
+            margin="normal"
+            //value={signUpData.name}
+            onChange={handleChange}
+            required
+            name="mobile"
+          />
 
           <TextField
             type="email"
@@ -119,29 +113,12 @@ console.log(msg);
             sx={{ marginTop: 3, borderRadius: 5 }}
             type="submit"
           >
-            Sign In
+            Create Account
           </Button>
-          <Link
-            href="/signup"
-            underline="none"
-            marginTop={2}
-            color={"blueviolet"}
-          >
-            If you don't have account, Create Account
-          </Link>
-
-          <Link
-            href="/forget"
-            underline="hover"
-            marginTop={2}
-            color={"indianred"}
-          >
-            Forget Password
-          </Link>
         </Box>
       </form>
     </div>
   );
 }
 
-export default Auth;
+export default Signup;
