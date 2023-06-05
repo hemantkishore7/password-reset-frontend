@@ -28,7 +28,7 @@ function ResetPassword() {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      const { data } = await axios.post(url, { password });
+      const { data } = await axios.post(`/api/password-reset/${param.id}/${param.token}`, { password });
       setMsg(data.message);
       setError("");
       navigate("/");
