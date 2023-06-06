@@ -8,27 +8,34 @@ function ResetPassword() {
   const [error, setError] = useState("");
   const [password, setPassword] = useState("");
   const [validUrl, setValidUrl] = useState(false);
-  const param = useParams();
+  const { id, token } = useParams();
   const navigate = useNavigate();
 
-  const url = `https://password-reset-9tmp.onrender.com/api/password-reset/${param.id}/${param.token}`;
+  
+
+  const verifyUrl = async () => {
+    try {
+      await axios.get(`https://password-reset-9tmp.onrender.com/api/password-reset/${id}/${token}`);
+      setValidUrl(true);
+    } catch (error) {
+      setValidUrl(false);
+      console.log(error);
+    }
+  }
 
   useEffect(() => {
-    const verifyUrl = async () => {
-      try {
-        await axios.get(url);
-        setValidUrl(true);
-      } catch (error) {
-        setValidUrl(false);
-      }
+  
       verifyUrl();
-    };
-  }, [param, url]);
+  }, []);
+
+  console.log(validUrl);
 
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      const { data } = await axios.post(`/api/password-reset/${param.id}/${param.token}`, { password });
+      const { data } = await axios.post(`/api/password-reset/${id}/${token}`, {
+        password,
+      });
       setMsg(data.message);
       setError("");
       navigate("/");
@@ -45,60 +52,67 @@ function ResetPassword() {
   }
   return (
     <>
-    {validUrl ? (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <Box
-          display="flex"
-          flexDirection={"column"}
-          maxWidth={400}
-          alignItems={"center"}
-          justifyContent={"center"}
-          margin={"auto"}
-          marginTop={5}
-          padding={3}
-          borderRadius={5}
-          boxShadow={"10px 10px 10px #ccc"}
-          sx={{
-            ":hover": {
-              boxShadow: "10px 10px 20px #ccc",
-            },
-          }}
-        >
-          <Typography
-            variant="h4"
-            fontWeight="bold"
-            textAlign="center"
-            margin="auto"
-          >
-            Reset Password
-          </Typography>
-          <TextField
-            placeholder="Enter New Password"
-            type="password"
-            variant="outlined"
-            margin="normal"
-            name="password"
-            required
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <Box
-            display={"flex"}
-            flexDirection={"column"}
-            margin={2}
-            textAlign={"center"}
-          >
+      {validUrl ? (
+        <div>
+          <form onSubmit={handleSubmit}>
             {error && <Typography color={"red"}>{error}</Typography>}
             {msg && <Typography color={"green"}>{msg}</Typography>}
-          </Box>
-          <Button variant="contained" color="success" sx={{ borderRadius: 3 }}>
-            Submit
-          </Button>
-        </Box>
-      </form>
-    </div>
-    ) : (<h1>404 Not Found</h1> 
-    )}
+            <Box
+              display="flex"
+              flexDirection={"column"}
+              maxWidth={400}
+              alignItems={"center"}
+              justifyContent={"center"}
+              margin={"auto"}
+              marginTop={5}
+              padding={3}
+              borderRadius={5}
+              boxShadow={"10px 10px 10px #ccc"}
+              sx={{
+                ":hover": {
+                  boxShadow: "10px 10px 20px #ccc",
+                },
+              }}
+            >
+              <Typography
+                variant="h4"
+                fontWeight="bold"
+                textAlign="center"
+                margin="auto"
+              >
+                Reset Password
+              </Typography>
+              <TextField
+                placeholder="Enter New Password"
+                type="password"
+                variant="outlined"
+                margin="normal"
+                name="password"
+                required
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <Box
+                display={"flex"}
+                flexDirection={"column"}
+                margin={2}
+                textAlign={"center"}
+              ></Box>
+              <Button
+                variant="contained"
+                color="success"
+                sx={{ borderRadius: 3 }}
+                type="submit"
+              >
+                Submit
+              </Button>
+            </Box>
+          </form>
+        </div>
+      ) : (
+        <Typography variant="h2" fontWeight={"bold"}>
+          404 Page not Found
+        </Typography>
+      )}
     </>
   );
 }
