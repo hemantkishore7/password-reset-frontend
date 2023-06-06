@@ -13,7 +13,7 @@ function Header() {
   }
   return (
     <Box display={"flex"}> 
-    <AppBar>
+    <AppBar >
    <Toolbar>
    <Typography variant='h5' fontWeight={"bold"} textAlign="center" margin={"auto"}>
     HOME

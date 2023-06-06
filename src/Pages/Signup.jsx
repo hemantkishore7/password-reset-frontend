@@ -20,6 +20,7 @@ function Signup() {
     try {
       const { data } = await axios.post("/api/signup", signUpData);
       setMsg(data.message);
+      { <Alert severity="success">{msg}</Alert>}
       navigate("/");
     } catch (error) {
       if (
@@ -28,6 +29,7 @@ function Signup() {
         error.response.status <= 500
       ) {
         setError(error.response.data.message);
+        {<Alert severity="error">{error}</Alert>}
       }
     }
   }
@@ -41,7 +43,7 @@ function Signup() {
   console.log(signUpData);
 
   return (
-    <div>
+    <div className="signuppage">
       {msg && <Alert severity="success">{msg}</Alert>}
       <form onSubmit={handleSubmit}>
         <Box
@@ -109,7 +111,7 @@ function Signup() {
           />
           <Button
             variant="contained"
-            color="secondary"
+            color="success"
             sx={{ marginTop: 3, borderRadius: 5 }}
             type="submit"
           >

@@ -1,4 +1,4 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, TextField, Typography } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -11,21 +11,20 @@ function ResetPassword() {
   const { id, token } = useParams();
   const navigate = useNavigate();
 
-  
-
   const verifyUrl = async () => {
     try {
-      await axios.get(`https://password-reset-9tmp.onrender.com/api/password-reset/${id}/${token}`);
+      await axios.get(
+        `https://password-reset-9tmp.onrender.com/api/password-reset/${id}/${token}`
+      );
       setValidUrl(true);
     } catch (error) {
       setValidUrl(false);
       console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
-  
-      verifyUrl();
+    verifyUrl();
   }, []);
 
   console.log(validUrl);
@@ -53,10 +52,8 @@ function ResetPassword() {
   return (
     <>
       {validUrl ? (
-        <div>
+        <div className="resetpage">
           <form onSubmit={handleSubmit}>
-            {error && <Typography color={"red"}>{error}</Typography>}
-            {msg && <Typography color={"green"}>{msg}</Typography>}
             <Box
               display="flex"
               flexDirection={"column"}
@@ -96,7 +93,10 @@ function ResetPassword() {
                 flexDirection={"column"}
                 margin={2}
                 textAlign={"center"}
-              ></Box>
+              >
+                {error && <Alert severity="error">{error}</Alert>}
+                {msg && <Alert severity="success">{msg}</Alert>}
+              </Box>
               <Button
                 variant="contained"
                 color="success"

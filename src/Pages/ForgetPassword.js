@@ -1,4 +1,4 @@
-import { Box, Button, Link, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, Link, TextField, Typography } from "@mui/material";
 
 import axios from "axios";
 import React, { useState } from "react";
@@ -29,7 +29,7 @@ function ForgetPassword() {
 
   console.log(msg);
   return (
-    <div>
+    <div className="forgotpage">
       <form onSubmit={handleSubmit}>
         <Box
           display="flex"
@@ -72,10 +72,10 @@ function ForgetPassword() {
             textAlign={"center"}
           >
             {
-              error && <Typography color={"red"}>{error}</Typography>
+              error && <Alert  severity="error">{error}</Alert>
             }
             {
-              msg && <Typography color={"green"}>{msg}</Typography>
+              msg && <Alert severity="success">{msg}</Alert>
             }
           </Box>
           <Button variant="contained" color="success" type="submit">
@@ -84,6 +84,7 @@ function ForgetPassword() {
           <Link
             href="/"
             underline="hover" padding={2}
+             color={"blanchedalmond"}
           >
             Back to Login
           </Link>

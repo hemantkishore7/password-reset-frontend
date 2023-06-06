@@ -27,9 +27,9 @@ function Auth() {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      const {data} = await axios.post("/api/signin", signInData);
-      localStorage.setItem("token",data.data);
-      setMsg(data.message)
+      const { data } = await axios.post("/api/signin", signInData);
+      localStorage.setItem("token", data.data);
+      setMsg(data.message);
       navigate("/home");
     } catch (error) {
       if (
@@ -42,7 +42,7 @@ function Auth() {
       }
     }
   }
-console.log(msg);
+  console.log(msg);
   //For Sign-Up
   // async function handleSubmit(e) {
   //   e.preventDefault();
@@ -64,13 +64,7 @@ console.log(msg);
   console.log(msg);
 
   return (
-    <div>
-    {
-     msg && <Alert severity="success">{msg}</Alert>
-    }
-    {
-      error &&  <Alert severity="error">{error}</Alert>
-    }
+    <div className="loginpage">
       <form onSubmit={handleSubmit}>
         <Box
           display={"flex"}
@@ -113,28 +107,33 @@ console.log(msg);
             required
             name="password"
           />
+          <Box>
+            {msg && <Alert severity="success">{msg}</Alert>}
+            {error && <Alert severity="error">{error}</Alert>}
+          </Box>
           <Button
-            variant="contained"
-            color="secondary"
+            variant="outlined"
             sx={{ marginTop: 3, borderRadius: 5 }}
             type="submit"
           >
             Sign In
           </Button>
+
+          <Typography marginTop={2}> If you don't have account,&nbsp;
           <Link
             href="/signup"
-            underline="none"
-            marginTop={2}
-            color={"blueviolet"}
+            underline="hover"
+            
+            color={"brown"}
           >
-            If you don't have account, Create Account
-          </Link>
+            create account
+          </Link></Typography>
 
           <Link
             href="/forget"
             underline="hover"
             marginTop={2}
-            color={"indianred"}
+            color={"brown"}
           >
             Forget Password
           </Link>
