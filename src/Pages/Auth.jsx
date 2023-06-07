@@ -43,25 +43,9 @@ function Auth() {
     }
   }
   console.log(msg);
-  //For Sign-Up
-  // async function handleSubmit(e) {
-  //   e.preventDefault();
-  //   try {
-  //     const { signInData: res } = await axios.post("/api/signup", signInData);
-  //     setMsg(res.message);
-  //     // navigate("/");
-  //   } catch (error) {
-  //     if (
-  //       error.response &&
-  //       error.response.status >= 400 &&
-  //       error.response.status <= 500
-  //     ) {
-  //       setError(error.response.data.message);
-  //     }
-  //   }
-  // }
+  
 
-  console.log(msg);
+  
 
   return (
     <div className="loginpage">
