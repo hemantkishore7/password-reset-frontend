@@ -1,6 +1,6 @@
 import { Alert, Box, Button, TextField, Typography } from "@mui/material";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 function ResetPassword() {
@@ -23,9 +23,9 @@ function ResetPassword() {
     }
   };
 
-  useEffect(() => {
-    verifyUrl();
-  }, []);
+  verifyUrl()
+
+  // useEffect(() => verifyUrl(), []);
 
   console.log(validUrl);
 
